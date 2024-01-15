@@ -1,0 +1,33 @@
+version: '3'
+
+services:
+  nginx:
+    build:
+      context: ./ui
+      dockerfile: Dockerfile
+    container_name: paperless-ui
+    ports:
+      - "80:80"
+
+  spring-app:
+    build:
+      context: .
+      dockerfile: Dockerfile_API
+    container_name: springboot-api
+    ports:
+      - "8080:8080"
+
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+
+  postgres:
+    image: postgres:latest
+    container_name: paperless-db
+    ports:
+      - "5432:5432"
+    environment:
+        POSTGRES_USER: 'paperless'
+        POSTGRES_PASSWORD: 'paperless'
+        POSTGRES_DB: 'paperless'
+    volumes:
+      - ./data/postgres:/var/lib/postgresql/data
