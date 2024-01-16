@@ -1,14 +1,9 @@
 package com.paperless.persistence.entities;
 
-import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import javax.persistence.*;
 
 
-@Getter
-@Setter
 @Entity
-@Table(name = "documents_savedviewfilterrule")
 public class DocumentsSavedViewFilterRuleEntity {
 
     @Id
@@ -25,15 +20,48 @@ public class DocumentsSavedViewFilterRuleEntity {
     )
     private Integer id;
 
-    @Column(name = "rule_type", nullable = false)
+    @Column(nullable = false)
     private Integer ruleType;
 
-    @Column(name = "value", length = 255)
+    @Column
     private String value;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "saved_view_id", nullable = false)
     private DocumentsSavedViewEntity savedView;
 
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(final Integer id) {
+        this.id = id;
+    }
+
+    public Integer getRuleType() {
+        return ruleType;
+    }
+
+    public void setRuleType(final Integer ruleType) {
+        this.ruleType = ruleType;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(final String value) {
+        this.value = value;
+    }
+
+    public DocumentsSavedViewEntity getSavedView() {
+        return savedView;
+    }
+
+    public void setSavedView(final DocumentsSavedViewEntity savedView) {
+        this.savedView = savedView;
+    }
+
 }
+
 

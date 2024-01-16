@@ -1,16 +1,12 @@
 package com.paperless.persistence.entities;
 
-import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
 
+import javax.persistence.*;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
-@Getter
-@Setter
+
 @Entity
-@Table(name = "documents_log")
 public class DocumentsLogEntity {
 
     @Id
@@ -27,17 +23,56 @@ public class DocumentsLogEntity {
     )
     private Integer id;
 
-    @Column(name = "group", nullable = false)
+    @Column(name = "\"group\"")
     private UUID group;
 
-    @Column(name = "message", nullable = false, columnDefinition = "TEXT")
+    @Column(nullable = false, columnDefinition = "text")
     private String message;
 
-    @Column(name = "level", nullable = false)
+    @Column(nullable = false)
     private Integer level;
 
-    @Column(name = "created", nullable = false)
+    @Column(nullable = false)
     private OffsetDateTime created;
 
-}
+    public Integer getId() {
+        return id;
+    }
 
+    public void setId(final Integer id) {
+        this.id = id;
+    }
+
+    public UUID getGroup() {
+        return group;
+    }
+
+    public void setGroup(final UUID group) {
+        this.group = group;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(final String message) {
+        this.message = message;
+    }
+
+    public Integer getLevel() {
+        return level;
+    }
+
+    public void setLevel(final Integer level) {
+        this.level = level;
+    }
+
+    public OffsetDateTime getCreated() {
+        return created;
+    }
+
+    public void setCreated(final OffsetDateTime created) {
+        this.created = created;
+    }
+
+}

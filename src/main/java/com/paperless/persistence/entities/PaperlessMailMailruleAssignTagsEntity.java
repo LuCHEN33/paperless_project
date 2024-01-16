@@ -1,15 +1,10 @@
 package com.paperless.persistence.entities;
 
 
-import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import javax.persistence.*;
 
 
-@Getter
-@Setter
 @Entity
-@Table(name = "paperless_mail_mailrule_assign_tags", uniqueConstraints = @UniqueConstraint(columnNames = {"mailrule_id", "tag_id"}))
 public class PaperlessMailMailruleAssignTagsEntity {
 
     @Id
@@ -34,5 +29,28 @@ public class PaperlessMailMailruleAssignTagsEntity {
     @JoinColumn(name = "tag_id", nullable = false)
     private DocumentsTagEntity tag;
 
-}
+    public Integer getId() {
+        return id;
+    }
 
+    public void setId(final Integer id) {
+        this.id = id;
+    }
+
+    public PaperlessMailMailruleEntity getMailrule() {
+        return mailrule;
+    }
+
+    public void setMailrule(final PaperlessMailMailruleEntity mailrule) {
+        this.mailrule = mailrule;
+    }
+
+    public DocumentsTagEntity getTag() {
+        return tag;
+    }
+
+    public void setTag(final DocumentsTagEntity tag) {
+        this.tag = tag;
+    }
+
+}

@@ -1,15 +1,9 @@
 package com.paperless.persistence.entities;
 
-
-import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import javax.persistence.*;
 
 
-@Getter
-@Setter
 @Entity
-@Table(name = "auth_permission")
 public class AuthGroupPermissionsEntity {
 
     @Id
@@ -26,13 +20,37 @@ public class AuthGroupPermissionsEntity {
     )
     private Integer id;
 
-    @Column(name = "name", nullable = false, length = 255)
-    private String name;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "group_id", nullable = false)
+    private AuthUserGroupEntity group;
 
-    @Column(name = "content_type", nullable = false, length = 100)
-    private String contentType;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "permission_id", nullable = false)
+    private AuthPermissionEntity permission;
 
-    @Column(name = "codename", nullable = false, length = 100)
-    private String codename;
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(final Integer id) {
+        this.id = id;
+    }
+
+    public AuthUserGroupEntity getGroup() {
+        return group;
+    }
+
+    public void setGroup(final AuthUserGroupEntity group) {
+        this.group = group;
+    }
+
+    public AuthPermissionEntity getPermission() {
+        return permission;
+    }
+
+    public void setPermission(final AuthPermissionEntity permission) {
+        this.permission = permission;
+    }
 
 }
+

@@ -1,17 +1,10 @@
 package com.paperless.persistence.entities;
 
-import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
-
+import javax.persistence.*;
 import java.time.OffsetDateTime;
 
 
-
-@Getter
-@Setter
 @Entity
-@Table(name = "authtoken_token")
 public class AuthtokenTokenEntity {
 
     @Id
@@ -26,15 +19,37 @@ public class AuthtokenTokenEntity {
             strategy = GenerationType.SEQUENCE,
             generator = "primary_sequence"
     )
+    private Long id;
 
-    private String key;
-
-    @Column(name = "created", nullable = false)
+    @Column(nullable = false)
     private OffsetDateTime created;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false, unique = true)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
     private AuthUserEntity user;
 
-}
+    public Long getId() {
+        return id;
+    }
 
+    public void setId(final Long id) {
+        this.id = id;
+    }
+
+    public OffsetDateTime getCreated() {
+        return created;
+    }
+
+    public void setCreated(final OffsetDateTime created) {
+        this.created = created;
+    }
+
+    public AuthUserEntity getUser() {
+        return user;
+    }
+
+    public void setUser(final AuthUserEntity user) {
+        this.user = user;
+    }
+
+}

@@ -1,15 +1,9 @@
 package com.paperless.persistence.entities;
+import javax.persistence.*;
+import java.util.Set;
 
 
-import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
-
-
-@Getter
-@Setter
 @Entity
-@Table(name = "documents_savedview")
 public class DocumentsSavedViewEntity {
 
     @Id
@@ -26,23 +20,81 @@ public class DocumentsSavedViewEntity {
     )
     private Integer id;
 
-    @Column(name = "name", nullable = false, length = 128)
+    @Column(nullable = false, length = 128)
     private String name;
 
-    @Column(name = "show_on_dashboard", nullable = false)
+    @Column(nullable = false)
     private Boolean showOnDashboard;
 
-    @Column(name = "show_in_sidebar", nullable = false)
+    @Column(nullable = false)
     private Boolean showInSidebar;
 
-    @Column(name = "sort_field", length = 128)
+    @Column(length = 128)
     private String sortField;
 
-    @Column(name = "sort_reverse", nullable = false)
+    @Column(nullable = false)
     private Boolean sortReverse;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "owner_id")
     private AuthUserEntity owner;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(final Integer id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(final String name) {
+        this.name = name;
+    }
+
+    public Boolean getShowOnDashboard() {
+        return showOnDashboard;
+    }
+
+    public void setShowOnDashboard(final Boolean showOnDashboard) {
+        this.showOnDashboard = showOnDashboard;
+    }
+
+    public Boolean getShowInSidebar() {
+        return showInSidebar;
+    }
+
+    public void setShowInSidebar(final Boolean showInSidebar) {
+        this.showInSidebar = showInSidebar;
+    }
+
+    public String getSortField() {
+        return sortField;
+    }
+
+    public void setSortField(final String sortField) {
+        this.sortField = sortField;
+    }
+
+    public Boolean getSortReverse() {
+        return sortReverse;
+    }
+
+    public void setSortReverse(final Boolean sortReverse) {
+        this.sortReverse = sortReverse;
+    }
+
+    public AuthUserEntity getOwner() {
+        return owner;
+    }
+
+    public void setOwner(final AuthUserEntity owner) {
+        this.owner = owner;
+    }
+
 }
+
 

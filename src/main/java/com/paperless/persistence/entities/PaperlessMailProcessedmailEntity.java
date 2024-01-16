@@ -1,16 +1,10 @@
 package com.paperless.persistence.entities;
 
-import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
-
+import javax.persistence.*;
 import java.time.OffsetDateTime;
 
 
-@Getter
-@Setter
 @Entity
-@Table(name = "paperless_mail_processedmail")
 public class PaperlessMailProcessedmailEntity {
 
     @Id
@@ -27,25 +21,25 @@ public class PaperlessMailProcessedmailEntity {
     )
     private Integer id;
 
-    @Column(name = "folder", nullable = false, length = 256)
+    @Column(nullable = false, length = 256)
     private String folder;
 
-    @Column(name = "uid", nullable = false, length = 256)
+    @Column(nullable = false, length = 256)
     private String uid;
 
-    @Column(name = "subject", nullable = false, length = 256)
+    @Column(nullable = false, length = 256)
     private String subject;
 
-    @Column(name = "received", nullable = false)
+    @Column(nullable = false)
     private OffsetDateTime received;
 
-    @Column(name = "processed", nullable = false)
+    @Column(nullable = false)
     private OffsetDateTime processed;
 
-    @Column(name = "status", nullable = false, length = 256)
+    @Column(nullable = false, length = 256)
     private String status;
 
-    @Column(name = "error", columnDefinition = "TEXT")
+    @Column(columnDefinition = "text")
     private String error;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -56,5 +50,86 @@ public class PaperlessMailProcessedmailEntity {
     @JoinColumn(name = "rule_id", nullable = false)
     private PaperlessMailMailruleEntity rule;
 
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(final Integer id) {
+        this.id = id;
+    }
+
+    public String getFolder() {
+        return folder;
+    }
+
+    public void setFolder(final String folder) {
+        this.folder = folder;
+    }
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(final String uid) {
+        this.uid = uid;
+    }
+
+    public String getSubject() {
+        return subject;
+    }
+
+    public void setSubject(final String subject) {
+        this.subject = subject;
+    }
+
+    public OffsetDateTime getReceived() {
+        return received;
+    }
+
+    public void setReceived(final OffsetDateTime received) {
+        this.received = received;
+    }
+
+    public OffsetDateTime getProcessed() {
+        return processed;
+    }
+
+    public void setProcessed(final OffsetDateTime processed) {
+        this.processed = processed;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(final String status) {
+        this.status = status;
+    }
+
+    public String getError() {
+        return error;
+    }
+
+    public void setError(final String error) {
+        this.error = error;
+    }
+
+    public AuthUserEntity getOwner() {
+        return owner;
+    }
+
+    public void setOwner(final AuthUserEntity owner) {
+        this.owner = owner;
+    }
+
+    public PaperlessMailMailruleEntity getRule() {
+        return rule;
+    }
+
+    public void setRule(final PaperlessMailMailruleEntity rule) {
+        this.rule = rule;
+    }
+
 }
+
 

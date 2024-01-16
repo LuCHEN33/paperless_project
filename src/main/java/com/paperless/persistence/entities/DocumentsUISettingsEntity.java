@@ -1,17 +1,10 @@
 package com.paperless.persistence.entities;
 
 
-import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
-import org.hibernate.annotations.JdbcTypeCode;
-import org.hibernate.type.SqlTypes;
+import javax.persistence.*;
 
 
-@Getter
-@Setter
 @Entity
-@Table(name = "documents_uisettings")
 public class DocumentsUISettingsEntity {
 
     @Id
@@ -28,14 +21,36 @@ public class DocumentsUISettingsEntity {
     )
     private Integer id;
 
-    @JdbcTypeCode(SqlTypes.JSON)
-    @Column(name = "settings", columnDefinition = "jsonb")
+    @Column(columnDefinition = "text")
     private String settings;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false, unique = true)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
     private AuthUserEntity user;
 
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(final Integer id) {
+        this.id = id;
+    }
+
+    public String getSettings() {
+        return settings;
+    }
+
+    public void setSettings(final String settings) {
+        this.settings = settings;
+    }
+
+    public AuthUserEntity getUser() {
+        return user;
+    }
+
+    public void setUser(final AuthUserEntity user) {
+        this.user = user;
+    }
 
 }
 

@@ -1,15 +1,11 @@
 package com.paperless.persistence.entities;
 
 
-import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import javax.persistence.*;
+import java.util.Set;
 
 
-@Setter
-@Getter
 @Entity
-@Table(name = "auth_permission", uniqueConstraints = @UniqueConstraint(columnNames = {"id", "codename"}))
 public class AuthPermissionEntity {
 
     @Id
@@ -26,13 +22,38 @@ public class AuthPermissionEntity {
     )
     private Integer id;
 
-    @Column(name = "name", nullable = false, length = 255)
+    @Column(nullable = false)
     private String name;
 
-    @Column(name = "content_type", nullable = false, length = 100)
+    @Column(nullable = false, length = 100)
     private String contentType;
 
-    @Column(name = "codename", nullable = false, length = 100)
+    @Column(nullable = false, length = 100)
     private String codename;
+
+    public Integer getId() {return id;}
+
+    public void setId(final Integer id) {
+        this.id = id;
+    }
+
+    public String getName() {return name;}
+
+    public void setName(final String name) {
+        this.name = name;
+    }
+
+    public String getContentType() {return contentType;}
+
+    public void setContentType(final String contentType) {
+        this.contentType = contentType;
+    }
+
+    public String getCodename() {return codename;}
+
+    public void setCodename(final String codename) {
+        this.codename = codename;
+    }
+
 }
 

@@ -1,16 +1,12 @@
 package com.paperless.persistence.entities;
 
 
-import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
 
+import javax.persistence.*;
 import java.time.OffsetDateTime;
 
-@Getter
-@Setter
+
 @Entity
-@Table(name = "documents_paperlesstask", uniqueConstraints = @UniqueConstraint(columnNames = "task_id"))
 public class DocumentsPaperlessTaskEntity {
 
     @Id
@@ -27,32 +23,113 @@ public class DocumentsPaperlessTaskEntity {
     )
     private Integer id;
 
-    @Column(name = "task_id", nullable = false, length = 255, unique = true)
+    @Column(nullable = false)
     private String taskId;
 
-    @Column(name = "acknowledged", nullable = false)
+    @Column(nullable = false)
     private Boolean acknowledged;
 
-    @Column(name = "date_created")
+    @Column
     private OffsetDateTime dateCreated;
 
-    @Column(name = "date_done")
+    @Column
     private OffsetDateTime dateDone;
 
-    @Column(name = "date_started")
+    @Column
     private OffsetDateTime dateStarted;
 
-    @Column(name = "result", columnDefinition = "TEXT")
+    @Column(columnDefinition = "text")
     private String result;
 
-    @Column(name = "status", nullable = false, length = 30)
+    @Column(nullable = false, length = 30)
     private String status;
 
-    @Column(name = "task_file_name", length = 255)
+    @Column
     private String taskFileName;
 
-    @Column(name = "task_name", length = 255)
+    @Column
     private String taskName;
 
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(final Integer id) {
+        this.id = id;
+    }
+
+    public String getTaskId() {
+        return taskId;
+    }
+
+    public void setTaskId(final String taskId) {
+        this.taskId = taskId;
+    }
+
+    public Boolean getAcknowledged() {
+        return acknowledged;
+    }
+
+    public void setAcknowledged(final Boolean acknowledged) {
+        this.acknowledged = acknowledged;
+    }
+
+    public OffsetDateTime getDateCreated() {
+        return dateCreated;
+    }
+
+    public void setDateCreated(final OffsetDateTime dateCreated) {
+        this.dateCreated = dateCreated;
+    }
+
+    public OffsetDateTime getDateDone() {
+        return dateDone;
+    }
+
+    public void setDateDone(final OffsetDateTime dateDone) {
+        this.dateDone = dateDone;
+    }
+
+    public OffsetDateTime getDateStarted() {
+        return dateStarted;
+    }
+
+    public void setDateStarted(final OffsetDateTime dateStarted) {
+        this.dateStarted = dateStarted;
+    }
+
+    public String getResult() {
+        return result;
+    }
+
+    public void setResult(final String result) {
+        this.result = result;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(final String status) {
+        this.status = status;
+    }
+
+    public String getTaskFileName() {
+        return taskFileName;
+    }
+
+    public void setTaskFileName(final String taskFileName) {
+        this.taskFileName = taskFileName;
+    }
+
+    public String getTaskName() {
+        return taskName;
+    }
+
+    public void setTaskName(final String taskName) {
+        this.taskName = taskName;
+    }
+
 }
+
 

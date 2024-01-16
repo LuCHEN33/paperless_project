@@ -1,14 +1,11 @@
 package com.paperless.persistence.entities;
 
-import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+
+import javax.persistence.*;
+import java.util.Set;
 
 
-@Getter
-@Setter
 @Entity
-@Table(name = "paperless_mail_mailrule", uniqueConstraints = @UniqueConstraint(columnNames = "name"))
 public class PaperlessMailMailruleEntity {
 
     @Id
@@ -25,35 +22,50 @@ public class PaperlessMailMailruleEntity {
     )
     private Integer id;
 
-    @Column(name = "name", nullable = false, length = 256, unique = true)
+    @Column(nullable = false, length = 256)
     private String name;
 
-    @Column(name = "folder", nullable = false, length = 256)
+    @Column(nullable = false, length = 256)
     private String folder;
 
-    @Column(name = "filter_from", length = 256)
+    @Column(length = 256)
     private String filterFrom;
 
-    @Column(name = "filter_subject", length = 256)
+    @Column(length = 256)
     private String filterSubject;
 
-    @Column(name = "filter_body", length = 256)
+    @Column(length = 256)
     private String filterBody;
 
-    @Column(name = "maximum_age", nullable = false)
+    @Column(nullable = false)
     private Integer maximumAge;
 
-    @Column(name = "action", nullable = false)
+    @Column(nullable = false)
     private Integer action;
 
-    @Column(name = "action_parameter", length = 256)
+    @Column(length = 256)
     private String actionParameter;
 
-    @Column(name = "assign_title_from", nullable = false)
+    @Column(nullable = false)
     private Integer assignTitleFrom;
 
-    @Column(name = "assign_correspondent_from", nullable = false)
+    @Column(nullable = false)
     private Integer assignCorrespondentFrom;
+
+    @Column(nullable = false, name = "\"order\"")
+    private Integer order;
+
+    @Column(nullable = false)
+    private Integer attachmentType;
+
+    @Column(length = 256)
+    private String filterAttachmentFilename;
+
+    @Column(nullable = false)
+    private Integer consumptionScope;
+
+    @Column(length = 256)
+    private String filterTo;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "account_id", nullable = false)
@@ -67,25 +79,170 @@ public class PaperlessMailMailruleEntity {
     @JoinColumn(name = "assign_document_type_id")
     private DocumentsDocumentTypeEntity assignDocumentType;
 
-    @Column(name = "order", nullable = false)
-    private Integer order;
-
-    @Column(name = "attachment_type", nullable = false)
-    private Integer attachmentType;
-
-    @Column(name = "filter_attachment_filename", length = 256)
-    private String filterAttachmentFilename;
-
-    @Column(name = "consumption_scope", nullable = false)
-    private Integer consumptionScope;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "owner_id")
     private AuthUserEntity owner;
 
-    @Column(name = "filter_to", length = 256)
-    private String filterTo;
 
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(final Integer id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(final String name) {
+        this.name = name;
+    }
+
+    public String getFolder() {
+        return folder;
+    }
+
+    public void setFolder(final String folder) {
+        this.folder = folder;
+    }
+
+    public String getFilterFrom() {
+        return filterFrom;
+    }
+
+    public void setFilterFrom(final String filterFrom) {
+        this.filterFrom = filterFrom;
+    }
+
+    public String getFilterSubject() {
+        return filterSubject;
+    }
+
+    public void setFilterSubject(final String filterSubject) {
+        this.filterSubject = filterSubject;
+    }
+
+    public String getFilterBody() {
+        return filterBody;
+    }
+
+    public void setFilterBody(final String filterBody) {
+        this.filterBody = filterBody;
+    }
+
+    public Integer getMaximumAge() {
+        return maximumAge;
+    }
+
+    public void setMaximumAge(final Integer maximumAge) {
+        this.maximumAge = maximumAge;
+    }
+
+    public Integer getAction() {
+        return action;
+    }
+
+    public void setAction(final Integer action) {
+        this.action = action;
+    }
+
+    public String getActionParameter() {
+        return actionParameter;
+    }
+
+    public void setActionParameter(final String actionParameter) {
+        this.actionParameter = actionParameter;
+    }
+
+    public Integer getAssignTitleFrom() {
+        return assignTitleFrom;
+    }
+
+    public void setAssignTitleFrom(final Integer assignTitleFrom) {
+        this.assignTitleFrom = assignTitleFrom;
+    }
+
+    public Integer getAssignCorrespondentFrom() {
+        return assignCorrespondentFrom;
+    }
+
+    public void setAssignCorrespondentFrom(final Integer assignCorrespondentFrom) {
+        this.assignCorrespondentFrom = assignCorrespondentFrom;
+    }
+
+    public Integer getOrder() {
+        return order;
+    }
+
+    public void setOrder(final Integer order) {
+        this.order = order;
+    }
+
+    public Integer getAttachmentType() {
+        return attachmentType;
+    }
+
+    public void setAttachmentType(final Integer attachmentType) {
+        this.attachmentType = attachmentType;
+    }
+
+    public String getFilterAttachmentFilename() {
+        return filterAttachmentFilename;
+    }
+
+    public void setFilterAttachmentFilename(final String filterAttachmentFilename) {
+        this.filterAttachmentFilename = filterAttachmentFilename;
+    }
+
+    public Integer getConsumptionScope() {
+        return consumptionScope;
+    }
+
+    public void setConsumptionScope(final Integer consumptionScope) {
+        this.consumptionScope = consumptionScope;
+    }
+
+    public String getFilterTo() {
+        return filterTo;
+    }
+
+    public void setFilterTo(final String filterTo) {
+        this.filterTo = filterTo;
+    }
+
+    public PaperlessMailMailaccountEntity getAccount() {
+        return account;
+    }
+
+    public void setAccount(final PaperlessMailMailaccountEntity account) {
+        this.account = account;
+    }
+
+    public DocumentsCorrespondentEntity getAssignCorrespondent() {
+        return assignCorrespondent;
+    }
+
+    public void setAssignCorrespondent(final DocumentsCorrespondentEntity assignCorrespondent) {
+        this.assignCorrespondent = assignCorrespondent;
+    }
+
+    public DocumentsDocumentTypeEntity getAssignDocumentType() {
+        return assignDocumentType;
+    }
+
+    public void setAssignDocumentType(final DocumentsDocumentTypeEntity assignDocumentType) {
+        this.assignDocumentType = assignDocumentType;
+    }
+
+    public AuthUserEntity getOwner() {
+        return owner;
+    }
+
+    public void setOwner(final AuthUserEntity owner) {
+        this.owner = owner;
+    }
 
 }
 

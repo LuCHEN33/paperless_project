@@ -1,17 +1,13 @@
 package com.paperless.persistence.entities;
 
-import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+
+import javax.persistence.*;
+import javax.validation.constraints.*;
 
 import java.time.OffsetDateTime;
 import java.util.Set;
 
-
-@Getter
-@Setter
 @Entity
-@Table(name = "auth_user")
 public class AuthUserEntity {
 
     @Id
@@ -28,35 +24,198 @@ public class AuthUserEntity {
     )
     private Integer id;
 
-    @Column(name = "password", nullable = false, length = 128)
+    @Column(nullable = false, length = 128)
     private String password;
 
-    @Column(name = "last_login")
+    @Column
     private OffsetDateTime lastLogin;
 
-    @Column(name = "is_superuser", nullable = false)
+    @Column(nullable = false)
     private Boolean isSuperuser;
 
-    @Column(name = "username", nullable = false, length = 150, unique = true)
+    @Column(nullable = false, length = 150)
     private String username;
 
-    @Column(name = "first_name", nullable = false, length = 150)
+    @Column(nullable = false, length = 150)
     private String firstName;
 
-    @Column(name = "last_name", nullable = false, length = 150)
+    @Column(nullable = false, length = 150)
     private String lastName;
 
-    @Column(name = "email", nullable = false, length = 254)
+    @Column(nullable = false, length = 254)
     private String email;
 
-    @Column(name = "is_staff", nullable = false)
+    @Column(nullable = false)
     private Boolean isStaff;
 
-    @Column(name = "is_active", nullable = false)
+    @Column(nullable = false)
     private Boolean isActive;
 
-    @Column(name = "date_joined", nullable = false)
+    @Column(nullable = false)
     private OffsetDateTime dateJoined;
 
-}
+    @OneToMany(mappedBy = "user")
+    private Set<AuthGroupEntity> userGroups;
 
+    @OneToMany(mappedBy = "owner")
+    private Set<DocumentsCorrespondentEntity> correspondents;
+
+    @OneToMany(mappedBy = "owner")
+    private Set<DocumentsDocumentTypeEntity> documentTypes;
+
+    @OneToMany(mappedBy = "owner")
+    private Set<DocumentsStoragePathEntity> storagePaths;
+
+    @OneToMany(mappedBy = "owner")
+    private Set<DocumentsTagEntity> documentsTags;
+
+    @OneToMany(mappedBy = "owner")
+    private Set<DocumentsDocumentEntity> documents;
+
+    @OneToMany(mappedBy = "user")
+    private Set<DocumentsNoteEntity> documentsNotes;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public OffsetDateTime getLastLogin() {
+        return lastLogin;
+    }
+
+    public void setLastLogin(OffsetDateTime lastLogin) {
+        this.lastLogin = lastLogin;
+    }
+
+    public Boolean getSuperuser() {
+        return isSuperuser;
+    }
+
+    public void setSuperuser(Boolean superuser) {
+        isSuperuser = superuser;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public Boolean getStaff() {
+        return isStaff;
+    }
+
+    public void setStaff(Boolean staff) {
+        isStaff = staff;
+    }
+
+    public Boolean getActive() {
+        return isActive;
+    }
+
+    public void setActive(Boolean active) {
+        isActive = active;
+    }
+
+    public OffsetDateTime getDateJoined() {
+        return dateJoined;
+    }
+
+    public void setDateJoined(OffsetDateTime dateJoined) {
+        this.dateJoined = dateJoined;
+    }
+
+    public Set<AuthGroupEntity> getUserGroups() {
+        return userGroups;
+    }
+
+    public void setUserGroups(Set<AuthGroupEntity> userGroups) {
+        this.userGroups = userGroups;
+    }
+
+    public Set<DocumentsCorrespondentEntity> getCorrespondents() {
+        return correspondents;
+    }
+
+    public void setCorrespondents(Set<DocumentsCorrespondentEntity> correspondents) {
+        this.correspondents = correspondents;
+    }
+
+    public Set<DocumentsDocumentTypeEntity> getDocumentTypes() {
+        return documentTypes;
+    }
+
+    public void setDocumentTypes(Set<DocumentsDocumentTypeEntity> documentTypes) {
+        this.documentTypes = documentTypes;
+    }
+
+    public Set<DocumentsStoragePathEntity> getStoragePaths() {
+        return storagePaths;
+    }
+
+    public void setStoragePaths(Set<DocumentsStoragePathEntity> storagePaths) {
+        this.storagePaths = storagePaths;
+    }
+
+    public Set<DocumentsTagEntity> getDocumentsTags() {
+        return documentsTags;
+    }
+
+    public void setDocumentsTags(Set<DocumentsTagEntity> documentsTags) {
+        this.documentsTags = documentsTags;
+    }
+
+    public Set<DocumentsDocumentEntity> getDocuments() {
+        return documents;
+    }
+
+    public void setDocuments(Set<DocumentsDocumentEntity> documents) {
+        this.documents = documents;
+    }
+
+    public Set<DocumentsNoteEntity> getDocumentsNotes() {
+        return documentsNotes;
+    }
+
+    public void setDocumentsNotes(Set<DocumentsNoteEntity> documentsNotes) {
+        this.documentsNotes = documentsNotes;
+    }
+}

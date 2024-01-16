@@ -1,16 +1,11 @@
 package com.paperless.persistence.entities;
 
-import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
 
+import javax.persistence.*;
 import java.util.Set;
 
 
-@Setter
-@Getter
 @Entity
-@Table(name = "documents_correspondent", uniqueConstraints = @UniqueConstraint(columnNames = {"name", "owner_id"}))
 public class DocumentsCorrespondentEntity {
 
     @Id
@@ -27,21 +22,83 @@ public class DocumentsCorrespondentEntity {
     )
     private Integer id;
 
-    @Column(name = "name", nullable = false, length = 128)
+    @Column(nullable = false, length = 128)
     private String name;
 
-    @Column(name = "match", nullable = false, length = 256)
+    @Column(nullable = false, length = 256)
     private String match;
 
-    @Column(name = "matching_algorithm", nullable = false)
+    @Column(nullable = false)
     private Integer matchingAlgorithm;
 
-    @Column(name = "is_insensitive", nullable = false)
+    @Column(nullable = false)
     private Boolean isInsensitive;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "owner_id")
     private AuthUserEntity owner;
 
+    @OneToMany(mappedBy = "correspondent")
+    private Set<DocumentsDocumentEntity> correspondentDocuments;
+
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(final Integer id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(final String name) {
+        this.name = name;
+    }
+
+    public String getMatch() {
+        return match;
+    }
+
+    public void setMatch(final String match) {
+        this.match = match;
+    }
+
+    public Integer getMatchingAlgorithm() {
+        return matchingAlgorithm;
+    }
+
+    public void setMatchingAlgorithm(final Integer matchingAlgorithm) {
+        this.matchingAlgorithm = matchingAlgorithm;
+    }
+
+    public Boolean getIsInsensitive() {
+        return isInsensitive;
+    }
+
+    public void setIsInsensitive(final Boolean isInsensitive) {
+        this.isInsensitive = isInsensitive;
+    }
+
+    public AuthUserEntity getOwner() {
+        return owner;
+    }
+
+    public void setOwner(final AuthUserEntity owner) {
+        this.owner = owner;
+    }
+
+    public Set<DocumentsDocumentEntity> getCorrespondentDocumentsDocuments() {
+        return correspondentDocuments;
+    }
+
+    public void setCorrespondentDocumentsDocuments(
+            final Set<DocumentsDocumentEntity> correspondentDocuments) {
+        this.correspondentDocuments = correspondentDocuments;
+    }
+
 
 }
+

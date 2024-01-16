@@ -1,14 +1,10 @@
 package com.paperless.persistence.entities;
 
 
-import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import javax.persistence.*;
 
-@Setter
-@Getter
+
 @Entity
-@Table(name = "auth_group", uniqueConstraints = @UniqueConstraint(columnNames = "name"))
 public class AuthGroupEntity {
 
     @Id
@@ -25,12 +21,36 @@ public class AuthGroupEntity {
     )
     private Integer id;
 
-    @Column(name = "name", nullable = false, length = 150, unique = true)
-    private String name;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private AuthUserEntity user;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "group_id", nullable = false)
-    private AuthGroupEntity group;
+    private AuthUserGroupEntity group;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(final Integer id) {
+        this.id = id;
+    }
+
+    public AuthUserEntity getUser() {return user;}
+
+    public void setUser(final AuthUserEntity user) {
+        this.user = user;
+    }
+
+    public AuthUserGroupEntity getGroup() {
+        return group;
+    }
+
+    public void setGroup(final AuthUserGroupEntity group) {
+        this.group = group;
+    }
 
 }
+
 

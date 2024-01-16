@@ -1,18 +1,12 @@
 package com.paperless.persistence.entities;
 
-import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
-
+import javax.persistence.*;
 import java.time.OffsetDateTime;
 
 
-@Getter
-@Setter
-@Entity
-@Table(name = "documents_note")
-public class DocumentsNoteEntity {
 
+@Entity
+public class DocumentsNoteEntity {
     @Id
     @Column(nullable = false, updatable = false)
     @SequenceGenerator(
@@ -27,10 +21,10 @@ public class DocumentsNoteEntity {
     )
     private Integer id;
 
-    @Column(name = "note", nullable = false, columnDefinition = "TEXT")
+    @Column(nullable = false, columnDefinition = "text")
     private String note;
 
-    @Column(name = "created", nullable = false)
+    @Column(nullable = false)
     private OffsetDateTime created;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -41,5 +35,34 @@ public class DocumentsNoteEntity {
     @JoinColumn(name = "user_id")
     private AuthUserEntity user;
 
-}
+    public Integer getId() {return id;}
 
+    public void setId(final Integer id) {
+        this.id = id;
+    }
+
+    public String getNote() {return note;}
+
+    public void setNote(final String note) {
+        this.note = note;
+    }
+
+    public OffsetDateTime getCreated() {return created;}
+
+    public void setCreated(final OffsetDateTime created) {
+        this.created = created;
+    }
+
+    public DocumentsDocumentEntity getDocument() {return document;}
+
+    public void setDocument(final DocumentsDocumentEntity document) {
+        this.document = document;
+    }
+
+    public AuthUserEntity getUser() {return user;}
+
+    public void setUser(final AuthUserEntity user) {
+        this.user = user;
+    }
+
+}
