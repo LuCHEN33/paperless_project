@@ -9,6 +9,7 @@ services:
     ports:
       - "80:80"
 
+
   spring-app:
     build:
       context: .
@@ -19,6 +20,7 @@ services:
 
     environment:
       - SPRING_PROFILES_ACTIVE=docker
+
 
   postgres:
     image: postgres:latest
@@ -31,3 +33,26 @@ services:
         POSTGRES_DB: 'paperless'
     volumes:
       - ./data/postgres:/var/lib/postgresql/data
+
+  rabbitmq:
+    image: "rabbitmq:3-management"
+    container_name: 'rabbitmq'
+    ports:
+       - "5672:5672"
+       - "9093:15672"
+    environment:
+        RABBITMQ_DEFAULT_USER: "rabbitmq_user"
+        RABBITMQ_DEFAULT_PASS: "rabbitmq_password"
+
+
+
+  minio:
+    image: minio/minio
+    container_name: 'minio'
+    ports:
+      - "9000:9000"
+      - "9090:9090"
+    environment:
+      MINIO_ACCESS_KEY: "minio_user"
+      MINIO_SECRET_KEY: "minio_password"
+    command: server /data --console-address ":9090"
