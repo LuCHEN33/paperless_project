@@ -83,6 +83,12 @@ public class PaperlessMailMailruleEntity {
     @JoinColumn(name = "owner_id")
     private AuthUserEntity owner;
 
+    @OneToMany(mappedBy = "rule")
+    private Set<PaperlessMailProcessedmailEntity> ruleProcessedMails;
+
+    @OneToMany(mappedBy = "mailrule")
+    private Set<PaperlessMailMailruleAssignTagsEntity> mailruleMailRuleAssignTags;
+
 
     public Integer getId() {
         return id;
@@ -244,5 +250,20 @@ public class PaperlessMailMailruleEntity {
         this.owner = owner;
     }
 
+    public Set<PaperlessMailProcessedmailEntity> getRuleProcessedMails() {
+        return ruleProcessedMails;
+    }
+
+    public void setRuleProcessedMails(Set<PaperlessMailProcessedmailEntity> ruleProcessedMails) {
+        this.ruleProcessedMails = ruleProcessedMails;
+    }
+
+    public Set<PaperlessMailMailruleAssignTagsEntity> getMailruleMailRuleAssignTags() {
+        return mailruleMailRuleAssignTags;
+    }
+
+    public void setMailruleMailRuleAssignTags(Set<PaperlessMailMailruleAssignTagsEntity> mailruleMailRuleAssignTags) {
+        this.mailruleMailRuleAssignTags = mailruleMailRuleAssignTags;
+    }
 }
 

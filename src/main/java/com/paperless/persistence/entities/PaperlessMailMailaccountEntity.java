@@ -49,6 +49,17 @@ public class PaperlessMailMailaccountEntity {
     @JoinColumn(name = "owner_id")
     private AuthUserEntity owner;
 
+    public Set<PaperlessMailMailruleEntity> getAccountMailRules() {
+        return accountMailRules;
+    }
+
+    public void setAccountMailRules(Set<PaperlessMailMailruleEntity> accountMailRules) {
+        this.accountMailRules = accountMailRules;
+    }
+
+    @OneToMany(mappedBy = "account")
+    private Set<PaperlessMailMailruleEntity> accountMailRules;
+
 
     public Integer getId() {
         return id;

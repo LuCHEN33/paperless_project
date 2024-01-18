@@ -1,5 +1,6 @@
 package com.paperless.configuration;
 
+import com.paperless.services.MinIOService;
 import io.minio.MinioClient;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

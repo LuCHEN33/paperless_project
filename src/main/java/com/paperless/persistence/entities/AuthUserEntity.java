@@ -75,6 +75,83 @@ public class AuthUserEntity {
     @OneToMany(mappedBy = "user")
     private Set<DocumentsNoteEntity> documentsNotes;
 
+    @OneToMany(mappedBy = "user")
+    private Set<DocumentsUISettingsEntity> uiSettings;
+
+    @OneToMany(mappedBy = "owner")
+    private Set<DocumentsSavedViewEntity> savedViews;
+
+    @OneToMany(mappedBy = "owner")
+    private Set<PaperlessMailMailaccountEntity> mailAccounts;
+
+    public Set<DocumentsUISettingsEntity> getUiSettings() {
+        return uiSettings;
+    }
+
+    public void setUiSettings(Set<DocumentsUISettingsEntity> uiSettings) {
+        this.uiSettings = uiSettings;
+    }
+
+    public Set<DocumentsSavedViewEntity> getSavedViews() {
+        return savedViews;
+    }
+
+    public void setSavedViews(Set<DocumentsSavedViewEntity> savedViews) {
+        this.savedViews = savedViews;
+    }
+
+    public Set<PaperlessMailMailaccountEntity> getMailAccounts() {
+        return mailAccounts;
+    }
+
+    public void setMailAccounts(Set<PaperlessMailMailaccountEntity> mailAccounts) {
+        this.mailAccounts = mailAccounts;
+    }
+
+    public Set<PaperlessMailMailruleEntity> getMailRules() {
+        return mailRules;
+    }
+
+    public void setMailRules(Set<PaperlessMailMailruleEntity> mailRules) {
+        this.mailRules = mailRules;
+    }
+
+    public Set<AuthUserUserPermissionsEntity> getUserPermissions() {
+        return userPermissions;
+    }
+
+    public void setUserPermissions(Set<AuthUserUserPermissionsEntity> userPermissions) {
+        this.userPermissions = userPermissions;
+    }
+
+    public Set<AuthtokenTokenEntity> getAuthTokens() {
+        return authTokens;
+    }
+
+    public void setAuthTokens(Set<AuthtokenTokenEntity> authTokens) {
+        this.authTokens = authTokens;
+    }
+
+    public Set<PaperlessMailProcessedmailEntity> getProcessedMails() {
+        return processedMails;
+    }
+
+    public void setProcessedMails(Set<PaperlessMailProcessedmailEntity> processedMails) {
+        this.processedMails = processedMails;
+    }
+
+    @OneToMany(mappedBy = "owner")
+    private Set<PaperlessMailMailruleEntity> mailRules;
+
+    @OneToMany(mappedBy = "user")
+    private Set<AuthUserUserPermissionsEntity> userPermissions;
+
+    @OneToMany(mappedBy = "user")
+    private Set<AuthtokenTokenEntity> authTokens;
+
+    @OneToMany(mappedBy = "owner")
+    private Set<PaperlessMailProcessedmailEntity> processedMails;
+
     public Integer getId() {
         return id;
     }

@@ -43,6 +43,13 @@ public class DocumentsTagEntity {
     @JoinColumn(name = "owner_id")
     private AuthUserEntity owner;
 
+    @OneToMany(mappedBy = "tag")
+    private Set<DocumentsDocumentTagsEntity> tagDocumentTags;
+
+
+    @OneToMany(mappedBy = "tag")
+    private Set<PaperlessMailMailruleAssignTagsEntity> tagMailRuleAssignTags;
+
     public Integer getId() {
         return id;
     }
@@ -107,6 +114,22 @@ public class DocumentsTagEntity {
         this.owner = owner;
     }
 
+
+    public Set<DocumentsDocumentTagsEntity> getTagDocumentTags() {
+        return tagDocumentTags;
+    }
+
+    public void setTagDocumentTags(Set<DocumentsDocumentTagsEntity> tagDocumentTags) {
+        this.tagDocumentTags = tagDocumentTags;
+    }
+
+    public Set<PaperlessMailMailruleAssignTagsEntity> getTagMailRuleAssignTags() {
+        return tagMailRuleAssignTags;
+    }
+
+    public void setTagMailRuleAssignTags(Set<PaperlessMailMailruleAssignTagsEntity> tagMailRuleAssignTags) {
+        this.tagMailRuleAssignTags = tagMailRuleAssignTags;
+    }
 }
 
 

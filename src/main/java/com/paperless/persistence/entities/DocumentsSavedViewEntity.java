@@ -39,6 +39,9 @@ public class DocumentsSavedViewEntity {
     @JoinColumn(name = "owner_id")
     private AuthUserEntity owner;
 
+    @OneToMany(mappedBy = "savedView")
+    private Set<DocumentsSavedViewFilterRuleEntity> savedViewSavedViewFilterRules;
+
     public Integer getId() {
         return id;
     }
@@ -95,6 +98,13 @@ public class DocumentsSavedViewEntity {
         this.owner = owner;
     }
 
+    public Set<DocumentsSavedViewFilterRuleEntity> getSavedViewSavedViewFilterRules() {
+        return savedViewSavedViewFilterRules;
+    }
+
+    public void setSavedViewSavedViewFilterRules(Set<DocumentsSavedViewFilterRuleEntity> savedViewSavedViewFilterRules) {
+        this.savedViewSavedViewFilterRules = savedViewSavedViewFilterRules;
+    }
 }
 
 

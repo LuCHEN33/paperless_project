@@ -4,7 +4,6 @@ import javax.persistence.*;
 import java.time.OffsetDateTime;
 
 
-
 @Entity
 public class DocumentsNoteEntity {
     @Id
@@ -49,9 +48,7 @@ public class DocumentsNoteEntity {
 
     public OffsetDateTime getCreated() {return created;}
 
-    public void setCreated(final OffsetDateTime created) {
-        this.created = created;
-    }
+    public void setCreated(final OffsetDateTime created) {this.created = created;}
 
     public DocumentsDocumentEntity getDocument() {return document;}
 

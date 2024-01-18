@@ -42,6 +42,9 @@ public class DocumentsDocumentTypeEntity {
     private Set<DocumentsDocumentEntity> documentTypeDocuments;
 
 
+    @OneToMany(mappedBy = "assignDocumentType")
+    private Set<PaperlessMailMailruleEntity> assignDocumentTypeMailRules;
+
     public Integer getId() {
         return id;
     }
@@ -97,6 +100,14 @@ public class DocumentsDocumentTypeEntity {
     public void setDocumentTypeDocumentsDocuments(
             final Set<DocumentsDocumentEntity> documentTypeDocuments) {
         this.documentTypeDocuments = documentTypeDocuments;
+    }
+
+    public Set<PaperlessMailMailruleEntity> getAssignDocumentTypeMailRules() {
+        return assignDocumentTypeMailRules;
+    }
+
+    public void setAssignDocumentTypeMailRules(Set<PaperlessMailMailruleEntity> assignDocumentTypeMailRules) {
+        this.assignDocumentTypeMailRules = assignDocumentTypeMailRules;
     }
 
 }

@@ -31,6 +31,12 @@ public class AuthPermissionEntity {
     @Column(nullable = false, length = 100)
     private String codename;
 
+    @OneToMany(mappedBy = "permission")
+    private Set<AuthGroupPermissionsEntity> AuthGroupPermissions;
+
+    @OneToMany(mappedBy = "permission")
+    private Set<AuthUserUserPermissionsEntity> AuthUserPermissions;
+
     public Integer getId() {return id;}
 
     public void setId(final Integer id) {
@@ -55,5 +61,20 @@ public class AuthPermissionEntity {
         this.codename = codename;
     }
 
+    public Set<AuthGroupPermissionsEntity> getAuthGroupPermissions() {
+        return AuthGroupPermissions;
+    }
+
+    public void setAuthGroupPermissions(Set<AuthGroupPermissionsEntity> authGroupPermissions) {
+        AuthGroupPermissions = authGroupPermissions;
+    }
+
+    public Set<AuthUserUserPermissionsEntity> getAuthUserPermissions() {
+        return AuthUserPermissions;
+    }
+
+    public void setAuthUserPermissions(Set<AuthUserUserPermissionsEntity> authUserPermissions) {
+        AuthUserPermissions = authUserPermissions;
+    }
 }
 

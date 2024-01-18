@@ -1,5 +1,7 @@
 package com.paperless.persistence.entities;
 
+import com.paperless.services.dto.update.UpdateDocumentRequest;
+
 import javax.persistence.*;
 import java.time.OffsetDateTime;
 import java.util.Set;
@@ -165,6 +167,19 @@ public class DocumentsDocumentEntity {
     }
 
     public void setTags(final Set<DocumentsDocumentTagsEntity> tags) {this.tags = tags;}
+
+
+
+    public void updateByUpdateDocumentRequest (UpdateDocumentRequest update) {
+        setTitle(update.getTitle());
+        setContent(update.getContent());
+        setArchiveSerialNumber(update.getArchiveSerialNumber());
+        setCreated(OffsetDateTime.parse(update.getCreatedDate()));
+        setModified(OffsetDateTime.parse(update.getModified()));
+        setAdded(OffsetDateTime.parse(update.getAdded()));
+        setArchivedFileName(update.getArchivedFileName());
+        setOriginalFileName(update.getOriginalFileName());
+    }
 
 }
 

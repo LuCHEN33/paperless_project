@@ -41,6 +41,17 @@ public class DocumentsCorrespondentEntity {
     @OneToMany(mappedBy = "correspondent")
     private Set<DocumentsDocumentEntity> correspondentDocuments;
 
+    @OneToMany(mappedBy = "assignCorrespondent")
+    private Set<PaperlessMailMailruleEntity> assignCorrespondentMailRules;
+
+
+    public Set<PaperlessMailMailruleEntity> getAssignCorrespondentMailRules() {
+        return assignCorrespondentMailRules;
+    }
+
+    public void setAssignCorrespondentMailRules(Set<PaperlessMailMailruleEntity> assignCorrespondentMailRules) {
+        this.assignCorrespondentMailRules = assignCorrespondentMailRules;
+    }
 
     public Integer getId() {
         return id;

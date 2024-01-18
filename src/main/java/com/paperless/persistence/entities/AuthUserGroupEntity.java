@@ -25,6 +25,28 @@ public class AuthUserGroupEntity {
     @Column(nullable = false, length = 150)
     private String name;
 
+    @OneToMany(mappedBy = "group")
+    private Set<AuthGroupEntity> groupUserGroups;
+
+    public Set<AuthGroupEntity> getGroupUserGroups() {
+        return groupUserGroups;
+    }
+
+    public void setGroupUserGroups(Set<AuthGroupEntity> groupUserGroups) {
+        this.groupUserGroups = groupUserGroups;
+    }
+
+    public Set<AuthGroupPermissionsEntity> getGroupGroupPermissions() {
+        return groupGroupPermissions;
+    }
+
+    public void setGroupGroupPermissions(Set<AuthGroupPermissionsEntity> groupGroupPermissions) {
+        this.groupGroupPermissions = groupGroupPermissions;
+    }
+
+    @OneToMany(mappedBy = "group")
+    private Set<AuthGroupPermissionsEntity> groupGroupPermissions;
+
     public Integer getId() {
         return id;
     }
