@@ -14,6 +14,7 @@ import com.paperless.services.mapper.UpdateDocument200ResponseMapper;
 import io.minio.MinioClient;
 import io.minio.PutObjectArgs;
 import io.minio.errors.*;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +31,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 @Service
+@Slf4j
 public class DocumentServiceImpl implements DocumentService {
 
     private final DocumentsDocumentRepository documentsDocumentRepository;
@@ -59,13 +61,14 @@ public class DocumentServiceImpl implements DocumentService {
     @Override
     public GetDocument200Response getDocument(Integer id, Integer page, Boolean fullPerms) {
         DocumentsDocumentEntity foundEntity =  documentsDocumentRepository.getReferenceById(id);
+        log.debug("Document entity retrieved successfully for id: {}", id);
         return getDocument200ResponseMapper.entityToDto(foundEntity);
     }
 
 
     @Override
     public void uploadDocument(DocumentDTO documentDTO, MultipartFile file) {
-
+        // Setting timestamps and initializing fields
         documentDTO.setCreated(OffsetDateTime.now());
         documentDTO.setAdded(OffsetDateTime.now());
         documentDTO.setModified(OffsetDateTime.now());
@@ -75,10 +78,12 @@ public class DocumentServiceImpl implements DocumentService {
 
         DocumentsDocumentEntity documentToBeSaved = documentMapper.dtoToEntity(documentDTO);
 
+        // Additional entity setup
         documentToBeSaved.setChecksum("checksum");
         documentToBeSaved.setStorageType("pdf");
         documentToBeSaved.setMimeType("pdf");
 
+        // Handling file storage
         String objectName = UUID.randomUUID().toString() + getFileExtension(Objects.requireNonNull(file.getOriginalFilename()));
 
         try {
@@ -90,10 +95,12 @@ public class DocumentServiceImpl implements DocumentService {
                             .contentType(file.getContentType())
                             .build()
             );
+            log.debug("File uploaded to Minio with object name: {}", objectName);
+
         } catch (ErrorResponseException | InsufficientDataException | InternalException | InvalidKeyException | InvalidResponseException | IOException | NoSuchAlgorithmException | ServerException | XmlParserException e) {
             throw new RuntimeException(e);
         }
-
+        // Setting up storage path entity
         DocumentsStoragePathEntity pathToFile = new DocumentsStoragePathEntity();
         pathToFile.setPath(bucketName + "/" + objectName);
         pathToFile.setName(file.getOriginalFilename());
@@ -103,9 +110,10 @@ public class DocumentServiceImpl implements DocumentService {
 
         documentToBeSaved.setStoragePath(pathToFile);
 
+        // Sending to queue and saving
         rabbitMQService.sendToOcrDocumentInQueue(documentToBeSaved.getStoragePath().getPath());
-
         documentsDocumentRepository.save(documentToBeSaved);
+        log.debug("Document saved and sent to queue successfully");
     }
 
 
@@ -116,7 +124,6 @@ public class DocumentServiceImpl implements DocumentService {
             documentDTOS.add(documentMapper.entityToDto(document));
         }
 
-
         GetDocuments200Response sampleResponse = new GetDocuments200Response();
         sampleResponse.setCount(100);
         sampleResponse.setNext(1);
@@ -126,21 +133,24 @@ public class DocumentServiceImpl implements DocumentService {
         for(DocumentDTO documentDTO : documentDTOS) {
             sampleResponse.addResultsItem(documentDTO.toGetDocuments200ResponseResultsInner());
         }
-
+        log.info("Documents fetched successfully.");
         return ResponseEntity.ok(sampleResponse);
     }
 
     @Override
     public ResponseEntity<UpdateDocument200Response> updateDocument(Integer id, UpdateDocumentRequest updateDocumentRequest) {
-        DocumentsDocumentEntity documentEntity = documentsDocumentRepository.getReferenceById(id);
+        try {
+            DocumentsDocumentEntity documentEntity = documentsDocumentRepository.getReferenceById(id);
+            documentEntity.updateByUpdateDocumentRequest(updateDocumentRequest);
+            documentsDocumentRepository.save(documentEntity);
 
-        documentEntity.updateByUpdateDocumentRequest(updateDocumentRequest);
-
-        documentsDocumentRepository.save(documentEntity);
-
-        UpdateDocument200Response updateDocument200Response = updateDocument200ResponseMapper.entityToDto(documentEntity);
-
-        return ResponseEntity.ok(updateDocument200Response);
+            log.info("Document with ID {} updated successfully", id);
+            UpdateDocument200Response updateDocument200Response = updateDocument200ResponseMapper.entityToDto(documentEntity);
+            return ResponseEntity.ok(updateDocument200Response);
+        } catch (Exception e) {
+            log.error("Error updating document with ID {}: {}", id, e.getMessage());
+            throw e;
+        }
     }
 
 
