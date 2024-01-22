@@ -13,6 +13,7 @@ import com.paperless.services.mapper.GetDocument200ResponseMapper;
 import com.paperless.services.mapper.UpdateDocument200ResponseMapper;
 import io.minio.MinioClient;
 import io.minio.PutObjectArgs;
+import io.minio.RemoveObjectArgs;
 import io.minio.errors.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -157,6 +158,30 @@ public class DocumentServiceImpl implements DocumentService {
     private String getFileExtension(String filename) {
         int lastDotIndex = filename.lastIndexOf(".");
         return (lastDotIndex != -1) ? filename.substring(lastDotIndex) : "";
+    }
+
+    @Override
+    public void deleteDocument(Integer id) {
+        DocumentsDocumentEntity document = documentsDocumentRepository.findById(id).orElse(null);
+
+        if (document != null) {
+            documentsDocumentRepository.deleteById(id);
+            log.info("Document with ID: {} deleted from database successfully", id);
+        } else {
+            log.error("Could not delete document from database with ID: " + id);
+        }
+
+        try {
+            String objectName = document.getStoragePath().getPath();
+            minioClient.removeObject(RemoveObjectArgs.builder()
+                    .bucket(bucketName)
+                    .object(objectName)
+                    .build());
+            log.info("Document with object name: {} deleted from MinIO successfully", objectName);
+        } catch (Exception e) {
+            log.error("Error occurred while deleting document with ID: {}", id, e);
+        }
+
     }
 
 }

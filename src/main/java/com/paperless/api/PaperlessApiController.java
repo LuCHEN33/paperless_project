@@ -8,6 +8,7 @@ import com.paperless.services.dto.okresponse.GetDocument200Response;
 import com.paperless.services.dto.okresponse.GetDocuments200Response;
 import com.paperless.services.dto.okresponse.UpdateDocument200Response;
 import com.paperless.services.dto.update.UpdateDocumentRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.openapitools.jackson.nullable.JsonNullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,7 +24,7 @@ import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Optional;
 
-
+@Slf4j
 @Generated(value = "com.paperless.codegen.languages.SpringCodegen", date = "2023-10-22T12:32:07.613318Z[Etc/UTC]")
 @Controller
 @RequestMapping("${openapi.paperlessRestServer.base-path:}")
@@ -88,6 +89,28 @@ public class PaperlessApiController implements PaperlessApi {
     @Override
     public ResponseEntity<UpdateDocument200Response> updateDocument(Integer id, UpdateDocumentRequest updateDocumentRequest) {
         return documentServiceImpl.updateDocument(id, updateDocumentRequest);
+    }
+
+    @Override
+    public ResponseEntity<Void> deleteDocument(Integer id) {
+        try {
+            documentServiceImpl.deleteDocument(id);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception e) {
+            log.error("Error deleting documents", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @Override
+    public ResponseEntity<Void> deleteCorrespondent(Integer id) {
+        try {
+            documentServiceImpl.deleteDocument(id);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception e) {
+            log.error("Error deleting documents", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
 
