@@ -7,6 +7,11 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mapstruct.factory.Mappers;
 import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.openapitools.jackson.nullable.JsonNullable;
+
+import java.time.OffsetDateTime;
+import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -19,14 +24,21 @@ class DocumentMapperTest {
     void testDtoToEntity() {
         // Arrange
         DocumentDTO dto = new DocumentDTO();
+
         // Set properties of dto as needed
+        dto.setTitle(JsonNullable.of("Titel"));
+        dto.setAdded(OffsetDateTime.now());
+        dto.setCreated(OffsetDateTime.now());
+        dto.setModified(OffsetDateTime.now());
 
         // Act
         DocumentsDocumentEntity entity = documentMapper.dtoToEntity(dto);
 
         // Assert
-        assertEquals(dto.getId(), entity.getId());
-        // Add more assertions here for other properties
+        assertEquals(dto.getTitle().orElse(null), entity.getTitle());
+        assertEquals(dto.getAdded(), entity.getAdded());
+        assertEquals(dto.getCreated(), entity.getCreated());
+        assertEquals(dto.getModified(), entity.getModified());
     }
 
     @Test
