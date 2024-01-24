@@ -25,7 +25,7 @@ class DocumentMapperTest {
         // Arrange
         DocumentDTO dto = new DocumentDTO();
 
-        // Set properties of dto as needed
+        // Set properties of dto
         dto.setTitle(JsonNullable.of("Titel"));
         dto.setAdded(OffsetDateTime.now());
         dto.setCreated(OffsetDateTime.now());
@@ -45,14 +45,27 @@ class DocumentMapperTest {
     void testEntityToDto() {
         // Arrange
         DocumentsDocumentEntity entity = new DocumentsDocumentEntity();
-        // Set properties of entity as needed
+
+        // Set properties of entity
+        entity.setTitle("Titel");
+        entity.setAdded(OffsetDateTime.now());
+        entity.setCreated(OffsetDateTime.now());
+        entity.setModified(OffsetDateTime.now());
+        entity.setArchivedFileName("archived file name");
+        entity.setOriginalFileName("original file name");
+        entity.setContent("this is supposed to be a lot of content right here");
 
         // Act
         DocumentDTO dto = documentMapper.entityToDto(entity);
 
         // Assert
         assertEquals(entity.getId(), dto.getId());
-        // Add more assertions here for other properties
+        assertEquals(entity.getAdded(), dto.getAdded());
+        assertEquals(entity.getCreated(), dto.getCreated());
+        assertEquals(entity.getModified(), dto.getModified());
+        assertEquals(entity.getArchivedFileName(), dto.getArchivedFileName().orElse(null));
+        assertEquals(entity.getOriginalFileName(), dto.getOriginalFileName().orElse(null));
+        assertEquals(entity.getContent(), dto.getContent().orElse(null));
     }
 
 
