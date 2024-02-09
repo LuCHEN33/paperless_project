@@ -26,12 +26,10 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class ElasticsearchConfig
 {
-
     @Value("${elasticsearch.host}")
     private String host;
     @Value("${elasticsearch.port}")
     private int port;
-
 
     @Value("${elasticsearch.username}")
     private String username;
