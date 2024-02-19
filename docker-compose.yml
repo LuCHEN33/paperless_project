@@ -88,3 +88,17 @@ services:
     ports:
       - "9200:9200"
 
+  tesseract:
+    build:
+      context: ./OcrService/tesseract
+      dockerfile: Dockerfile_OCR
+    container_name: tesseract
+    depends_on:
+      minio:
+        condition: service_started
+      rabbitmq:
+        condition: service_started
+      elasticsearch:
+        condition: service_started
+      postgres:
+        condition: service_healthy
