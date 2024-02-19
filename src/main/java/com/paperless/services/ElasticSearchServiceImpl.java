@@ -34,7 +34,7 @@ public class ElasticSearchServiceImpl implements ElasticSearchService {
                 .index("doc-index")
                 .query(q -> q
                     .match(m -> m
-                        .field("titel")
+                        .field("title")
                         .query(searchText)
                     )
                 ), DocumentsDocumentEntity.class);
