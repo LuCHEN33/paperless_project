@@ -20,6 +20,8 @@ public interface DocumentService {
 
     ResponseEntity<UpdateDocument200Response> updateDocument(Integer id, UpdateDocumentRequest updateDocumentRequest);
 
+    String updateContent(String content, long id);
+
     void deleteDocument(Integer id);
 }
 
