@@ -44,7 +44,7 @@ public class DocumentServiceImpl implements DocumentService {
 
     private final RabbitMQService rabbitMQService;
 
-    private final ElasticSearchServiceImpl elasticSearchService;
+    private final ElasticSearchService elasticSearchService;
 
 
     @Value("${minio.bucketName}")
@@ -52,7 +52,7 @@ public class DocumentServiceImpl implements DocumentService {
 
 
     @Autowired
-    public DocumentServiceImpl(DocumentsDocumentRepository documentsDocumentRepository, DocumentMapper documentMapper, GetDocument200ResponseMapper getDocument200ResponseMapper, UpdateDocument200ResponseMapper updateDocument200ResponseMapper, MinioClient minioClient, RabbitMQService rabbitMQService, ElasticSearchServiceImpl elasticSearchService){
+    public DocumentServiceImpl(DocumentsDocumentRepository documentsDocumentRepository, DocumentMapper documentMapper, GetDocument200ResponseMapper getDocument200ResponseMapper, UpdateDocument200ResponseMapper updateDocument200ResponseMapper, MinioClient minioClient, RabbitMQServiceImpl rabbitMQService, ElasticSearchServiceImpl elasticSearchService){
         this.documentsDocumentRepository = documentsDocumentRepository;
         this.documentMapper = documentMapper;
         this.getDocument200ResponseMapper = getDocument200ResponseMapper;
@@ -196,6 +196,11 @@ public class DocumentServiceImpl implements DocumentService {
             log.error("Error occurred while deleting document with ID: {}", id, e);
         }
 
+    }
+
+    public String updateContent(String content, long id) {
+        documentsDocumentRepository.updateContent(content, id);
+        return documentsDocumentRepository.findTitleById(id);
     }
 
 }
