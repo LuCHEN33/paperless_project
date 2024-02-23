@@ -8,7 +8,8 @@ import java.util.Set;
 
 
 
-@Entity
+@Entity(name = "Services_Document")
+@Table(name = "document")
 public class DocumentsDocumentEntity {
 
     @Id
