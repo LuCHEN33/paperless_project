@@ -25,7 +25,6 @@ RUN apt-get update && \
 
 # Download the English language package for Tesseract
 RUN mkdir -p /usr/share/tesseract-ocr/4.00/tessdata
-ADD https://github.com/tesseract-ocr/tessdata_best/raw/main/eng.traineddata /usr/share/tesseract-ocr/4.00/tessdata/
 
 # Copy the built application from the previous stage
 COPY --from=build /app/target/*.jar app.jar
