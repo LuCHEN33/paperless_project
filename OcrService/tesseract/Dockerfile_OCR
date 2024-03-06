@@ -18,20 +18,21 @@ RUN mvn package -DskipTests
 # Use an official OpenJDK runtime as a parent image
 FROM openjdk:11-jdk-slim
 
-# Update the package list and install tesseract-ocr
-RUN apt-get update && \
-    apt-get install -y tesseract-ocr && \
-    rm -rf /var/lib/apt/lists/*
+#  install tesseract-ocr
+RUN apt-get update && apt-get install -y tesseract-ocr
+
 
 # Download the English language package for Tesseract
-RUN mkdir -p /usr/share/tesseract-ocr/4.00/tessdata
+RUN apt-get update && apt-get install -y wget
+RUN mkdir -p /usr/share/tesseract-ocr/4.00/tessdata && \
+    mkdir -p /app/tessdata/ && \
+    wget -O /app/tessdata/eng.traineddata https://github.com/tesseract-ocr/tessdata/raw/main/eng.traineddata
+
 
 # Copy the built application from the previous stage
 COPY --from=build /app/target/*.jar app.jar
 
-# Verify Tesseract installation (Optional)
-RUN tesseract --version && \
-    tesseract --list-langs
+EXPOSE 8081
 
 # Set the entry point to run the application
 ENTRYPOINT ["java","-jar","/app.jar"]
