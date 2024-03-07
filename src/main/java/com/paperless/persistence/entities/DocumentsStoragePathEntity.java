@@ -21,10 +21,10 @@ public class DocumentsStoragePathEntity {
             generator = "primary_sequence"
     )
     private Integer id;
-    @NotBlank(message = "Match cannot be blank")
+
     @Column(nullable = false, length = 128)
     private String name;
-    @NotBlank(message = "Match cannot be blank")
+
     @Column(nullable = false, length = 256)
     private String match;
 
