@@ -1,6 +1,7 @@
 package com.paperless.persistence.entities;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.util.Set;
 
 
@@ -20,10 +21,10 @@ public class DocumentsStoragePathEntity {
             generator = "primary_sequence"
     )
     private Integer id;
-
+    @NotBlank(message = "Match cannot be blank")
     @Column(nullable = false, length = 128)
     private String name;
-
+    @NotBlank(message = "Match cannot be blank")
     @Column(nullable = false, length = 256)
     private String match;
 
@@ -32,7 +33,7 @@ public class DocumentsStoragePathEntity {
 
     @Column(nullable = false)
     private Boolean isInsensitive;
-
+    @NotBlank(message = "Match cannot be blank")
     @Column(nullable = false, length = 512)
     private String path;
 
