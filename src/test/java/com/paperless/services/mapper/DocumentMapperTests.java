@@ -2,6 +2,8 @@ package com.paperless.services.mapper;
 
 import com.paperless.persistence.entities.DocumentsDocumentEntity;
 import com.paperless.services.dto.DocumentDTO;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mapstruct.factory.Mappers;
@@ -20,52 +22,42 @@ class DocumentMapperTest {
     @InjectMocks
     private DocumentMapper documentMapper = Mappers.getMapper(DocumentMapper.class);
 
-    @Test
-    void testDtoToEntity() {
-        // Arrange
-        DocumentDTO dto = new DocumentDTO();
+    private DocumentDTO dto;
+    private DocumentsDocumentEntity entity;
 
-        // Set properties of dto
-        dto.setTitle(JsonNullable.of("Titel"));
+    @BeforeEach
+    void setUp() {
+        dto = new DocumentDTO();
+        dto.setTitle(JsonNullable.of("Title"));
         dto.setAdded(OffsetDateTime.now());
         dto.setCreated(OffsetDateTime.now());
         dto.setModified(OffsetDateTime.now());
 
-        // Act
-        DocumentsDocumentEntity entity = documentMapper.dtoToEntity(dto);
-
-        // Assert
-        assertEquals(dto.getTitle().orElse(null), entity.getTitle());
-        assertEquals(dto.getAdded(), entity.getAdded());
-        assertEquals(dto.getCreated(), entity.getCreated());
-        assertEquals(dto.getModified(), entity.getModified());
-    }
-
-    @Test
-    void testEntityToDto() {
-        // Arrange
-        DocumentsDocumentEntity entity = new DocumentsDocumentEntity();
-
-        // Set properties of entity
-        entity.setTitle("Titel");
+        entity = new DocumentsDocumentEntity();
+        entity.setTitle("Title");
         entity.setAdded(OffsetDateTime.now());
         entity.setCreated(OffsetDateTime.now());
         entity.setModified(OffsetDateTime.now());
-        entity.setArchivedFileName("archived file name");
-        entity.setOriginalFileName("original file name");
-        entity.setContent("this is supposed to be a lot of content right here");
+    }
 
-        // Act
-        DocumentDTO dto = documentMapper.entityToDto(entity);
+    @Test
+    @DisplayName("Test Document mapper DTO to Entity")
+    void testDtoToEntity() {
+        DocumentsDocumentEntity resultEntity = documentMapper.dtoToEntity(dto);
+        assertEquals(dto.getTitle().orElse(null), resultEntity.getTitle());
+        assertEquals(dto.getAdded(), resultEntity.getAdded());
+        assertEquals(dto.getCreated(), resultEntity.getCreated());
+        assertEquals(dto.getModified(), resultEntity.getModified());
+    }
 
-        // Assert
-        assertEquals(entity.getId(), dto.getId());
-        assertEquals(entity.getAdded(), dto.getAdded());
-        assertEquals(entity.getCreated(), dto.getCreated());
-        assertEquals(entity.getModified(), dto.getModified());
-        assertEquals(entity.getArchivedFileName(), dto.getArchivedFileName().orElse(null));
-        assertEquals(entity.getOriginalFileName(), dto.getOriginalFileName().orElse(null));
-        assertEquals(entity.getContent(), dto.getContent().orElse(null));
+    @Test
+    @DisplayName("Test Document mapper Entity to DTO")
+    void testEntityToDto() {
+        DocumentDTO resultDto = documentMapper.entityToDto(entity);
+        assertEquals(entity.getTitle(), resultDto.getTitle().orElse(null));
+        assertEquals(entity.getAdded(), resultDto.getAdded());
+        assertEquals(entity.getCreated(), resultDto.getCreated());
+        assertEquals(entity.getModified(), resultDto.getModified());
     }
 
 

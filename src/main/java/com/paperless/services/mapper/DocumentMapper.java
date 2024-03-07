@@ -13,6 +13,7 @@ import java.time.ZoneOffset;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING,
@@ -68,7 +69,7 @@ public abstract class DocumentMapper implements BaseMapper<DocumentsDocumentEnti
 
     @Named("tagsEntity")
     JsonNullable<List<Integer>> map(Set<DocumentsDocumentTagsEntity> tags) {
-        return tags!=null ? JsonNullable.of( tags.stream().map( tag->(int)tag.getId() ).toList() ) : JsonNullable.undefined();
+        return tags!=null ? JsonNullable.of( tags.stream().map( tag->(int)tag.getId() ).collect(Collectors.toList()) ) : JsonNullable.undefined();
     }
 
     @Named("createdToCreatedDate")
