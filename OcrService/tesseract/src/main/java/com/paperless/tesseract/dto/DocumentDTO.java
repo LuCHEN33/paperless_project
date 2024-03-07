@@ -55,6 +55,7 @@ public class DocumentDTO {
 
   private JsonNullable<String> archivedFileName = JsonNullable.<String>undefined();
 
+
   public DocumentDTO id(Integer id) {
     this.id = id;
     return this;
