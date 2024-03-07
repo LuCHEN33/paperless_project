@@ -44,19 +44,22 @@ public class DocumentServiceImpl implements DocumentService {
 
     private final RabbitMQService rabbitMQService;
 
+    private final ElasticSearchServiceImpl elasticSearchService;
+
 
     @Value("${minio.bucketName}")
     private String bucketName;
 
 
     @Autowired
-    public DocumentServiceImpl(DocumentsDocumentRepository documentsDocumentRepository, DocumentMapper documentMapper, GetDocument200ResponseMapper getDocument200ResponseMapper, UpdateDocument200ResponseMapper updateDocument200ResponseMapper, MinioClient minioClient, RabbitMQService rabbitMQService){
+    public DocumentServiceImpl(DocumentsDocumentRepository documentsDocumentRepository, DocumentMapper documentMapper, GetDocument200ResponseMapper getDocument200ResponseMapper, UpdateDocument200ResponseMapper updateDocument200ResponseMapper, MinioClient minioClient, RabbitMQService rabbitMQService, ElasticSearchServiceImpl elasticSearchService){
         this.documentsDocumentRepository = documentsDocumentRepository;
         this.documentMapper = documentMapper;
         this.getDocument200ResponseMapper = getDocument200ResponseMapper;
         this.updateDocument200ResponseMapper = updateDocument200ResponseMapper;
         this.minioClient = minioClient;
         this.rabbitMQService = rabbitMQService;
+        this.elasticSearchService = elasticSearchService;
     }
 
     @Override
@@ -119,10 +122,21 @@ public class DocumentServiceImpl implements DocumentService {
 
 
     @Override
-    public ResponseEntity<GetDocuments200Response> getDocuments(Integer page, Integer pageSize, String query, String ordering, List<Integer> tagsIdAll, Integer documentTypeId, Integer storagePathIdIn, Integer correspondentId, Boolean truncateContent) {
+    public ResponseEntity<GetDocuments200Response> getDocuments(Integer page, Integer pageSize, String query, String ordering, List<Integer> tagsIdAll, Integer documentTypeId, Integer storagePathIdIn, Integer correspondentId, Boolean truncateContent) throws IOException {
         List<DocumentDTO> documentDTOS = new ArrayList<>();
-        for (DocumentsDocumentEntity document : documentsDocumentRepository.findAll()) {
-            documentDTOS.add(documentMapper.entityToDto(document));
+
+        if(query == null || query.isEmpty()) {
+            //find all documents
+            for (DocumentsDocumentEntity document : documentsDocumentRepository.findAll()) {
+                documentDTOS.add(documentMapper.entityToDto(document));
+            }
+            log.info("Query was empty. Searching for all documents");
+        } else {
+            //search with elasticsearch
+            for (DocumentsDocumentEntity document : elasticSearchService.findDocs(query)) {
+                documentDTOS.add(documentMapper.entityToDto(document));
+            }
+            log.info("Searching for documents matching '{}'", query);
         }
 
         GetDocuments200Response sampleResponse = new GetDocuments200Response();

@@ -24,6 +24,8 @@ services:
         condition: service_started
       postgres:
         condition: service_healthy
+      elasticsearch:
+        condition: service_healthy
 
     environment:
       - SPRING_PROFILES_ACTIVE=docker
@@ -76,15 +78,35 @@ services:
     image: elasticsearch:8.7.1
     container_name: 'elasticsearch'
     environment:
-      - node.name=elasticsearch-node
       - discovery.type=single-node
-      - cluster.name=elasticsearch-cluster
       - bootstrap.memory_lock=true
+      - cluster.name=docker-cluster
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-      - "xpack.security.enabled=true"
-      - "xpack.security.transport.ssl.enabled=false"
+      - "xpack.security.enabled=false"
+      - "xpack.security.enrollment.enabled=false"
       - ELASTIC_PASSWORD=search_password
 
     ports:
       - "9200:9200"
+      - "9300:9300"
 
+    healthcheck:
+      interval: 10s
+      retries: 80
+      test: curl --write-out 'HTTP %{http_code}' --fail --silent --output /dev/null http://localhost:9200/
+
+
+  tesseract:
+    build:
+      context: ./OcrService/tesseract
+      dockerfile: Dockerfile_OCR
+    container_name: tesseract
+    depends_on:
+      minio:
+        condition: service_started
+      rabbitmq:
+        condition: service_started
+      elasticsearch:
+        condition: service_started
+      postgres:
+        condition: service_healthy

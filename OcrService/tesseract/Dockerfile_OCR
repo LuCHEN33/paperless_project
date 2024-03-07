@@ -1,0 +1,38 @@
+# Stage 1: Build the application
+# Fetching latest version of Java
+FROM amazoncorretto:17-alpine-jdk as build
+
+# Set the working directory to /app
+WORKDIR /app
+
+# Install Maven
+RUN apk --no-cache add maven
+
+# Copy the application source code into the container
+COPY . /app
+
+# Build the application
+RUN mvn package -DskipTests
+
+# Stage 2: Setup runtime environment
+# Use an official OpenJDK runtime as a parent image
+FROM openjdk:11-jdk-slim
+
+#  install tesseract-ocr
+RUN apt-get update && apt-get install -y tesseract-ocr
+
+
+# Download the English language package for Tesseract
+RUN apt-get update && apt-get install -y wget
+RUN mkdir -p /usr/share/tesseract-ocr/4.00/tessdata && \
+    mkdir -p /app/tessdata/ && \
+    wget -O /app/tessdata/eng.traineddata https://github.com/tesseract-ocr/tessdata/raw/main/eng.traineddata
+
+
+# Copy the built application from the previous stage
+COPY --from=build /app/target/*.jar app.jar
+
+EXPOSE 8081
+
+# Set the entry point to run the application
+ENTRYPOINT ["java","-jar","/app.jar"]
