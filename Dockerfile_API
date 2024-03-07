@@ -1,17 +1,35 @@
-FROM maven:3.9.5-amazoncorretto-21
+FROM maven:3.8.5-openjdk-17 as build
+WORKDIR /usr/src/app
+COPY pom.xml .
+RUN mvn -B -f ./pom.xml -s /usr/share/maven/ref/settings-docker.xml dependency:go-offline -DskipTests
+COPY . .
+RUN mvn -B -f ./pom.xml -s /usr/share/maven/ref/settings-docker.xml package -DskipTests -DoutputDirectory=target
 
-# Working directory in the container
+
+# Package the application
+RUN mvn clean package -DskipTests
+
+# Runtime stage
+FROM openjdk:17-alpine as runtime
+
+# Set working directory for the container
 WORKDIR /app
 
-# We copy the entire app
-COPY src /app/src/
-COPY pom.xml /app/pom.xml
+# Install Tesseract OCR and English language package
+RUN apk --no-cache add tesseract-ocr
 
-#RUN ./mvnw package
-RUN mvn clean package
+RUN mkdir -p /usr/share/tessdata
+ADD https://github.com/tesseract-ocr/tessdata_best/raw/main/eng.traineddata /usr/share/tessdata/
 
-# Expose port 8080
+# Check the installation status
+RUN tesseract --list-langs
+RUN tesseract -v
+
+# Copy the JAR file from the build stage to the final image
+COPY --from=build /usr/src/app/target/paperless-1.0.jar paperless.jar
+
+# Expose the port the app runs on
 EXPOSE 8080
 
-# Run the jar file
-CMD ["java", "-jar", "target/paperless-1.0.jar"]
+# Command to run the application
+CMD ["java", "-jar", "paperless.jar"]

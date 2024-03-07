@@ -1,4 +1,4 @@
-version: '1'
+version: '3'
 
 services:
   nginx:
@@ -7,7 +7,7 @@ services:
       dockerfile: Dockerfile
     container_name: paperless-ui
     ports:
-      - "80:80"
+      - "8080:80"
 
 
   spring-app:
@@ -15,23 +15,25 @@ services:
       context: .
       dockerfile: Dockerfile_API
     container_name: springboot-api
+    platform: linux/amd64
     ports:
-      - "8080:8080"
+      - "8081:8081"
     depends_on:
       minio:
         condition: service_started
       rabbitmq:
         condition: service_started
-      postgres:
+      paperless-db:
         condition: service_healthy
       elasticsearch:
         condition: service_healthy
-
     environment:
-      - SPRING_PROFILES_ACTIVE=docker
+      # SPRING_PROFILES_ACTIVE=docker
+      MINIO_URL: http://minio:9000
+      ELASTICSEARCH_HOST: elasticsearch
 
 
-  postgres:
+  paperless-db:
     image: postgres:latest
     container_name: paperless-db
     ports:
@@ -41,7 +43,8 @@ services:
         POSTGRES_PASSWORD: 'paperless'
         POSTGRES_DB: 'paperless'
     volumes:
-      - ./data/postgres:/var/lib/postgresql/data
+      - paperless-db-data:/var/lib/postgresql/data
+      - ./init/init.sql:/docker-entrypoint-initdb.d/init.sql
 
     healthcheck:
       test: [ "CMD", "pg_isready", "-U", "paperless" ]
@@ -57,9 +60,13 @@ services:
        - "5672:5672"
        - "15672:15672"
     environment:
-        RABBITMQ_DEFAULT_USER: "rabbitmq_user"
-        RABBITMQ_DEFAULT_PASS: "rabbitmq_password"
-
+      RABBITMQ_DEFAULT_USER: admin
+      RABBITMQ_DEFAULT_PASS: admin
+    volumes:
+      - rabbitmq-data:/var/lib/rabbitmq
+      - rabbitmq-log:/var/log/rabbitmq
+      - ./init/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf
+      - ./init/definitions.json:/etc/rabbitmq/definitions.json
 
 
   minio:
@@ -71,7 +78,39 @@ services:
     environment:
       MINIO_ACCESS_KEY: "minio_user"
       MINIO_SECRET_KEY: "minio_password"
+      MINIO_URL: http://minio:9000
     command: server /data --console-address ":9090"
+    volumes:
+      - minio_data:/data
+
+
+  ocrworker:
+    container_name: 'ocrworker'
+    platform: linux/amd64
+    build:
+      context: .
+      dockerfile: Dockerfile_API
+    image: paperless-ocrworker:latest
+    ports:
+      - "8082:8082"
+    environment:
+      TESSERACT_PATH: /usr/share/tessdata
+      SPRING_RABBITMQ_HOST: rabbitmq
+      SPRING_RABBITMQ_USERNAME: admin
+      SPRING_RABBITMQ_PASSWORD: admin
+      MINIO_URL: http://minio:9000
+      ELASTICSEARCH_HOST: elasticsearch
+    depends_on:
+      rabbitmq:
+        condition: service_started
+      minio:
+        condition: service_started
+      elasticsearch:
+        condition: service_healthy
+      spring-app:
+        condition: service_started
+      paperless-db:
+        condition: service_healthy
 
 
   elasticsearch:
@@ -94,3 +133,14 @@ services:
       retries: 80
       test: curl --write-out 'HTTP %{http_code}' --fail --silent --output /dev/null http://localhost:9200/
 
+  kibana:
+    image: docker.elastic.co/kibana/kibana:8.2.3
+    ports:
+      - 5601:5601
+
+volumes:
+  paperless-db-data:
+  rabbitmq-data:
+  rabbitmq-log:
+  minio_data:
+  elasticsearch_data:
