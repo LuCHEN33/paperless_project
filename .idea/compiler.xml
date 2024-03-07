@@ -13,7 +13,6 @@
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="openapi-spring" target="1.8" />
-      <module name="tesseract" target="17" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
