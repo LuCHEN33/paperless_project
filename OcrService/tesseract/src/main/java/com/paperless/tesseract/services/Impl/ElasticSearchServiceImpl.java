@@ -39,18 +39,14 @@ public class ElasticSearchServiceImpl implements ElasticSearchService {
         }
     }
 
-    @Override
-    public Result indexDocument(DocumentsDocumentEntity document) throws IOException {
-        return null;
-    }
-/*
+
     @Override
     public Result indexDocument(DocumentsDocumentEntity Document) throws IOException {
         // Convert Document entity to DTO
         DocumentDTO documentdto = DocumentDTO.builder()
                 .id(Document.getId())
                 .title(JsonNullable.of(Document.getTitle()))
-                .tags(JsonNullable.of(Document.getTags()))
+                .content(JsonNullable.of(Document.getContent()))
                 .build();
 
         // Index the document
@@ -65,6 +61,5 @@ public class ElasticSearchServiceImpl implements ElasticSearchService {
     }
 
 
-*/
 
 }

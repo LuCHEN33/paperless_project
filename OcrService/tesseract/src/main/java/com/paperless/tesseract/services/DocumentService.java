@@ -7,5 +7,5 @@ import java.util.Optional;
 public interface DocumentService {
     void saveDocument(DocumentsDocumentEntity document);
 
-    Optional<DocumentsDocumentEntity> getById(String id);
+    public DocumentsDocumentEntity getById(String id);
 }

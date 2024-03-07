@@ -1,4 +1,6 @@
 package com.paperless.tesseract.services;
 
-public class OcrService {
+public interface OcrService {
+
+    void performOCR(String id);
 }

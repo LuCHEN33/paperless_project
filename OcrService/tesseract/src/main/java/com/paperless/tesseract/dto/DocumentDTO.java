@@ -1,9 +1,11 @@
 package com.paperless.tesseract.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.paperless.tesseract.dto.okresponse.GetDocumentTypes200ResponseResultsInner;
 import com.paperless.tesseract.dto.okresponse.GetDocuments200ResponseResultsInner;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
+import lombok.Builder;
 import org.openapitools.jackson.nullable.JsonNullable;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -18,7 +20,7 @@ import java.util.Objects;
 /**
  * Document
  */
-
+@Builder
 @Generated(value = "com.paperless.codegen.languages.SpringCodegen", date = "2023-10-22T12:32:07.613318Z[Etc/UTC]")
 public class DocumentDTO {
 
@@ -56,7 +58,7 @@ public class DocumentDTO {
   private JsonNullable<String> archivedFileName = JsonNullable.<String>undefined();
 
 
-  public DocumentDTO id(Integer id) {
+    public DocumentDTO id(Integer id) {
     this.id = id;
     return this;
   }
